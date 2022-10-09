@@ -6,22 +6,24 @@ on:
       - main
 
 jobs:
-  deploy:
-    name: deploy
+  devDeploy:
+    name: devDeploy
     runs-on: ubuntu-latest
+    environment:
+      name: dev
+      url: https://test.com
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [14.x]
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-    
+    # - run: npm ci
     - name: serverless deploy
-      # uses: serverless/github-action@v3.1
-      uses: serverless/github-action@v2
+      uses: serverless/github-action@v3.1
       with:
         args: deploy
       env:
